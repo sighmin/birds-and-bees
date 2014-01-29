@@ -1,5 +1,7 @@
 require 'spec_helper'
 
-describe Ants::Colony::Ant do
+include Ants::Colony
+
+describe Ant do
   it "moves like an ant"
 end

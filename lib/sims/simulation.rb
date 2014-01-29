@@ -1,5 +1,5 @@
 class Ants::Sims::Simulation
-  def self.simulate
+  def simulate
     "simulation here"
   end
 end

@@ -1,0 +1,12 @@
+# Users have a name, several grouped interests and an expected target cluster
+# Target clusters are: musical, sporty, hipster, foodie, geek
+
+0:
+  name: Mr Smith
+  interests:
+    music:
+    sport:
+    fashion:
+    food:
+    tech:
+  target: sporty
