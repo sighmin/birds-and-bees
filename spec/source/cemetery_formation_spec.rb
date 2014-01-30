@@ -16,6 +16,15 @@ describe CemeteryFormation do
         patchsize: 2
       )
     end
+
+    it "has variables initialized from config" do
+      expect(algorithm).to respond_to(:config, :ants, :items, :grid)
+
+      expect(algorithm.grid.row_count).to eq(20)
+      expect(algorithm.grid.square?).to   eq(true)
+      expect(algorithm.ants.length).to    be > 0
+      expect(algorithm.items.length).to   be > 0
+    end
   end
 
   describe "methods" do
@@ -23,4 +32,5 @@ describe CemeteryFormation do
 
     end
   end
+
 end
