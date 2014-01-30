@@ -1,7 +1,10 @@
 class Ants::Colony::Ant
 
-  def initialize(config)
+  attr_accessor :x, :y
+
+  def initialize(config, grid = nil)
     @@config = config
+    @@grid   = grid
   end
 
   def self.move
@@ -10,5 +13,9 @@ class Ants::Colony::Ant
 
   def self.act
     "ant picking/dropping"
+  end
+
+  def position
+    {x: @x, y: @y}
   end
 end

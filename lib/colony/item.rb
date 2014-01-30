@@ -1,10 +1,14 @@
 class Ants::Colony::Item
 
-  def initialize
-    @x, @y = 0, 0
+  attr_accessor :x, :y, :data
+
+  def initialize(position = {x: 0, y: 0}, data = {})
+    @x    = position[:x]
+    @y    = position[:y]
+    @data = data
   end
 
-  def similarity
-    0.8666666
+  def position
+    {x: @x, y: @y}
   end
 end
