@@ -2,7 +2,7 @@ class Ants::Colony::Item
 
   attr_accessor :x, :y, :data
 
-  def initialize(position = {x: 0, y: 0}, data = {})
+  def initialize(position = {x: 0, y: 0}, data = nil)
     @x    = position[:x]
     @y    = position[:y]
     @data = data
@@ -10,5 +10,13 @@ class Ants::Colony::Item
 
   def position
     {x: @x, y: @y}
+  end
+
+  def print
+    "O"
+  end
+
+  def dissimilarity
+    raise "NotOverridedInSubclassException"
   end
 end

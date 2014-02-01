@@ -1,4 +1,4 @@
-require "ants/version"
+require 'ants/version'
 require 'yaml'
 
 def expand_relative_path(file)
@@ -16,6 +16,7 @@ module Ants
   module Colony
     autoload :Ant,               expand_relative_path('colony/ant')
     autoload :Item,              expand_relative_path('colony/item')
+    autoload :UserItem,          expand_relative_path('colony/user_item')
   end
   autoload :Grid,                expand_relative_path('ants/grid')
   autoload :Utils,               expand_relative_path('ants/utils')
@@ -35,14 +36,8 @@ private
 
   def rec_symbolize_keys(hash)
     hash.inject({}){|result, (key, value)|
-      new_key = case key
-                when String then key.to_sym
-                else key
-                end
-      new_value = case value
-                  when Hash then rec_symbolize_keys(value)
-                  else value
-                  end
+      new_key         = key.is_a?(String) ? key.to_sym : key
+      new_value       = value.is_a?(Hash) ? rec_symbolize_keys(value) : value
       result[new_key] = new_value
       result
     }

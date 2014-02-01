@@ -1,5 +1,6 @@
+require 'simplecov'
+
 Dir['#{File.dirname(__FILE__)}/support/**/*.rb'].each {|file| require file}
-Dir['#{File.dirname(__FILE__)}/../lib/ants/utils.rb'].each {|file| require file}
 
 require 'rubygems'
 require 'bundler/setup'

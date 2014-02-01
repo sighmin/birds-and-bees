@@ -13,9 +13,11 @@ describe Simulation do
   end
 
   context "on the happy path" do
-    let(:simulation) { Simulation.new }
-    it "completes a run of the algorithm" do
-      expect(simulation.start).to eq(true)
+    let(:algorithm)  { Ants::Algorithm::CemeteryFormation.new }
+    let(:simulation) { Simulation.new(algorithm) }
+    it "completes a run of the algorithm handling exceptions" do
+      algorithm.stub(:run).and_raise(StandardError)
+      expect { simulation.start }.to_not raise_error
     end
   end
 

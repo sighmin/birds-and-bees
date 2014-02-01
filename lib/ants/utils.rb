@@ -1,4 +1,4 @@
-module Utils
+module Ants::Utils
 
   @@random = Random.new
 

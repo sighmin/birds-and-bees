@@ -9,10 +9,10 @@ class Ants::Sims::Simulation
   def start
     begin
       @algorithm.run
-      true
     rescue StandardError => e
       puts e
-      false
+    rescue
+      # fail silently
     end
   end
 

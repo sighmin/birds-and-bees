@@ -20,8 +20,20 @@ class Ants::Grid < Matrix
     raise "YouNeedToFixThisSimonError"
   end
 
+  def [](dangerous_i, dangerous_j)
+    max_index = size()
+    i = dangerous_i % max_index
+    j = dangerous_j % max_index
+    @rows.fetch(i){return nil}[j]
+  end
+
   def []=(x, y, value = nil)
-    @rows.fetch(x)[y] = value
+    @rows.fetch(x.to_i)[y.to_i] = value
+  end
+
+  def get(coords = {})
+    pos = {x: 0, y: 0}.merge(coords)
+    self[pos[:x], pos[:y]]
   end
 
   def set(coords = {}, value = nil)
@@ -38,13 +50,15 @@ class Ants::Grid < Matrix
   end
 
   def to_s
+    string = ""
     @rows.each do |row|
       line = ""
       row.each do |value|
         line << "#{value.nil? ? '.' : value.print} "
       end
-      puts line
+      string += "#{line}\n"
     end
+    string
   end
 
 end

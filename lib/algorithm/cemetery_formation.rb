@@ -33,14 +33,17 @@ private
     @items = []
     @dataset.each do |data|
       position = @grid.sample_nil_position
-      @items << Item.new(position, data)
+      @items << Ants::Colony::Item.new(position, data)
     end
     @grid.place(@items)
   end
 
   def init_ants
     @ants = []
-    @config[:colonysize].times { @ants << Ants::Colony::Ant.new(@config) }
+    @config[:colonysize].times do
+      position = @grid.sample_nil_position
+      @ants << Ants::Colony::Ant.new(@config, position, grid)
+    end
     @grid.place(@ants)
   end
 end
