@@ -12,6 +12,11 @@ class Ants::Colony::Item
     {x: @x, y: @y}
   end
 
+  def position=(position)
+    @x = position[:x]
+    @y = position[:y]
+  end
+
   def print
     "O"
   end

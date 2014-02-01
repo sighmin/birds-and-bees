@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Ants do
-  PARAMETERS = 'spec/support/test_config.yml'
 
   it "has a test method" do
     expect(Ants.test).to_not be_nil
@@ -12,6 +11,6 @@ describe Ants do
   end
 
   it "can parse yml" do
-    expect(Ants::parse_yml(PARAMETERS)).to_not be_nil
+    expect(Ants::parse_yml(TEST_CONFIG)).to_not be_nil
   end
 end

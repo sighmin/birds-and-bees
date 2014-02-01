@@ -4,8 +4,6 @@ include Ants::Algorithm
 
 describe CemeteryFormation do
 
-  TEST_CONFIG = 'spec/support/test_config.yml'
-
   describe "initial state" do
     let(:algorithm) do
       CemeteryFormation.new({iterations: 1}, TEST_CONFIG)
@@ -36,8 +34,8 @@ describe CemeteryFormation do
       CemeteryFormation.new({}, TEST_CONFIG)
     end
 
-    it "can run" do
+    it "#run begins the algorithm"
 
-    end
+    it "#find_hidden_ants reveals ants after an item has moved off of a site"
   end
 end

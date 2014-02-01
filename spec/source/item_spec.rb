@@ -3,15 +3,29 @@ require 'spec_helper'
 include Ants::Colony
 
 describe Item do
-  let!(:item){ Item.new({x: 0, y: 0}, {})}
+  POSITION = {x: 0, y: 1}
+  let(:grid){ Ants::Grid.build(2,2){|x,y| nil } }
+  let(:item) do
+    the_item = Item.new({x: 0, y: 0}, {})
+    grid.place([the_item])
+    the_item
+  end
 
   it "has helper methods" do
-    expect(item).to respond_to(:x, :y, :data, :position, :print)
+    expect(item).to respond_to(:x, :y, :data, :position, :print, :dissimilarity)
   end
 
   describe "methods" do
     it "#print returns a representative string" do
       expect(item.print).to eq("O")
+    end
+
+    it "#position returns items position in a hash" do
+      expect(item.position).to eq({x: 0, y: 0})
+    end
+
+    it "#dissimilarity raises an error" do
+      expect { item.dissimilarity }.to raise_error
     end
   end
 

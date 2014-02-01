@@ -49,6 +49,54 @@ class Ants::Grid < Matrix
     @rows.fetch(0).length
   end
 
+  def move(current, destination)
+    current_object     = get(current)
+    destination_object = get(destination)
+    if current_object.kind_of?(Ants::Colony::Item) && destination_object.kind_of?(Ants::Colony::Item)
+      raise "Cannot pile up items on the grid"
+    end
+    set(destination, current_object) unless destination_object.kind_of?(Ants::Colony::Item)
+    current_object.position = destination
+    set(current, nil)
+  end
+
+  def adjacent_sites(position)
+    neighbors(position)
+  end
+
+  def neighbors(position, patchsize = 1)
+    # Collect sites in a patch
+    patchwidth = (patchsize * 2) + 1
+    top_left   = {x: position[:x] - patchsize, y: position[:y] - patchsize}
+    sites = []
+    patchwidth.times do |x|
+      patchwidth.times do |y|
+        sites << {
+          x: top_left[:x] + x,
+          y: top_left[:y] + y
+        }
+      end
+    end
+    # Remove the centroid position
+    sites.reject! {|site| site[:x] == position[:x] && site[:y] == position[:y]}
+    # Mod the indices so they are 'safe'
+    gridsize = size()
+    sites.map! do |site|
+      {
+        x: site[:x] % gridsize,
+        y: site[:y] % gridsize
+      }
+    end
+  end
+
+  def item_at?(position)
+    get(position).kind_of? Ants::Colony::Item
+  end
+
+  def empty_at?(position)
+    not item_at?(position)
+  end
+
   def to_s
     string = ""
     @rows.each do |row|

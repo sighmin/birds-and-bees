@@ -21,6 +21,7 @@ class Ants::Algorithm::CemeteryFormation
       ant.perceive_and_act
       ant.move
     end
+    find_hidden_ants
   end
 
 private
@@ -45,6 +46,14 @@ private
       @ants << Ants::Colony::Ant.new(@config, position, grid)
     end
     @grid.place(@ants)
+  end
+
+  def find_hidden_ants
+    @ants.each do |ant|
+      if @grid.empty_at?(ant.position)
+        @grid.set(ant.position, ant)
+      end
+    end
   end
 end
 
