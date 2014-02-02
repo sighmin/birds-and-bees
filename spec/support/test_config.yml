@@ -2,3 +2,4 @@ gridsize: 20
 iterations: 200
 colonysize: 25
 patchsize: 2
+print_resolution: 50

@@ -12,14 +12,21 @@ class Ants::Colony::Ant
 
   def perceive_and_act
     if unladen? and @@grid.item_at?(position)
-      # compute lambda(Ya)
-      # compute Pp(Ya)
+      item = @@grid.get(position)
+      pickup_probability = item.pickup_probability(item, @@grid.neighbors(item.position))
       # if U(0,1) < Pp(Ya) then pickup(item) end
+      if Ants::Utils.random() < pickup_probability
+        pickup_item
+      end
     elsif laden? and @@grid.empty_at?(position)
-      # compute lambda(Ya)
-      # compute Pd(Ya)
+      drop_probability = @item.drop_probability(@item, @@grid.neighbors(@item.position))
+      if Ants::Utils.random() < drop_probability
+        drop_item
+      end
     else
-      # unable to act
+      # unable to act:
+      # 1. Laden & can't pile item on another item
+      # 2. Unladen & no item to pickup
     end
   end
 
@@ -42,7 +49,17 @@ class Ants::Colony::Ant
     "x"
   end
 
-private
+protected
+
+  def pickup_item
+    @item = @@grid.get(position)
+    @@grid.set(position, self)
+  end
+
+  def drop_item
+    @@grid.set(position, @item)
+    @item = nil
+  end
 
   def walk_towards(site)
     current_position = {x: @x, y: @y}

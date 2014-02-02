@@ -15,7 +15,8 @@ describe CemeteryFormation do
         gridsize:   20,
         iterations: 1,
         colonysize: 25,
-        patchsize:  2
+        patchsize:  2,
+        print_resolution: 50
       )
     end
 

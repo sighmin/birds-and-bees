@@ -21,7 +21,18 @@ class Ants::Colony::Item
     "O"
   end
 
-  def dissimilarity
+  def self.pickup_probability(item, neighbors)
+    raise "NotOverridedInSubclassException"
+  end
+
+  def self.drop_probability(item, neighbors)
+    raise "NotOverridedInSubclassException"
+  end
+
+protected
+
+  def self.dissimilarity(item, neighbors)
     raise "NotOverridedInSubclassException"
   end
 end
+

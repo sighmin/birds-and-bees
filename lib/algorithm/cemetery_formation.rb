@@ -13,10 +13,11 @@ class Ants::Algorithm::CemeteryFormation
   end
 
   def run
-    @config[:iterations].times { iteration() }
+    @config[:iterations].times { |i| iteration(i) }
   end
 
-  def iteration
+  def iteration(i)
+    print_grid(i)
     @ants.each do |ant|
       ant.perceive_and_act
       ant.move
@@ -54,6 +55,10 @@ private
         @grid.set(ant.position, ant)
       end
     end
+  end
+
+  def print_grid(i)
+    puts @grid.to_s if i % @config[:print_resolution] == 0
   end
 end
 
