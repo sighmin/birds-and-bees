@@ -13,4 +13,5 @@ RSpec.configure do |config|
 end
 
 TEST_CONFIG = 'spec/support/test_config.yml'
+MOCK_USERS  = 'spec/support/mock_users.yml'
 

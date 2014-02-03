@@ -45,8 +45,10 @@ NUM_USERS.times do |i|
 end
 
 # Persist generated users
-File.open('config/mock_users.yml', 'w+') do |file|
-  users.each do |user|
-    file.write(user.to_yaml + "\n")
+%w(config/mock_users.yml spec/support/mock_users.yml).each do |filename|
+  File.open(filename, 'w+') do |file|
+    users.each do |user|
+      file.write(user.to_yaml + "\n")
+    end
   end
 end

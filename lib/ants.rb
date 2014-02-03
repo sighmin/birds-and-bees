@@ -32,6 +32,10 @@ module Ants
     hash = rec_symbolize_keys(hash)
   end
 
+  def parse_array_yml(file)
+    File.read(file).squeeze("\n").split("---").map {|f| YAML.load(f) }.select {|x| x }
+  end
+
 private
 
   def rec_symbolize_keys(hash)

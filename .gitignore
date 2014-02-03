@@ -16,3 +16,4 @@ test/tmp
 test/version_tmp
 tmp
 config/mock_users.yml
+spec/support/mock_users.yml
