@@ -14,7 +14,7 @@ describe CemeteryFormation do
       expect(algorithm.config).to eq(
         gridsize:   20,
         iterations: 1,
-        colonysize: 25,
+        colonysize: 5,
         patchsize:  2,
         print_resolution: 50
       )

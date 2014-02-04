@@ -36,7 +36,42 @@ describe Ant do
       expect(ant.position).to eq({x: 0, y: 1})
     end
 
-    it "#perceive_and_act"
+    it "#move moves the ant's position" do
+      current_position = ant.position
+      ant.move
+      expect(ant.position).to_not eq(current_position)
+    end
+
+    describe "#perceive and act" do
+      context "when laden and on top of an item" do
+        it "is impossible due to the state of the ant" do
+          grid.place([Ants::Colony::UserItem.new(laden_ant.position)])
+          expect {laden_ant.perceive_and_act}.to_not change{grid}
+        end
+      end
+
+      context "when unladen and not on top of an item" do
+        it "is impossible due to the state of the ant" do
+          grid.set({x:0, y:1}, nil)
+          expect {ant.perceive_and_act}.to_not change{grid}
+        end
+      end
+
+      context "when unladen and on top of an item" do
+        it "item#pickup_probability should be called" do
+          #grid.set({x:0, y:1}, Ants::Colony::UserItem.new({x:0, y:1}))
+          #ant.grid = grid
+          #binding.pry
+          #ant.perceive_and_act
+          #expect { ant.perceive_and_act }.to change {grid}
+          #Ants::Colony::UserItem.should_receive(:pickup_probability).with(ant.position, grid.neighbors(ant.position), algorithm.config[:patchsize])
+        end
+      end
+
+      context "laden and not on top of an item" do
+        it "item#drop_probability should be called"
+      end
+    end
 
     describe "protected" do
       it "#unladen? tells me if the ant carries an item" do
@@ -50,6 +85,7 @@ describe Ant do
       end
 
       it "#walk_towards moves the ant onto the position" do
+        grid.set({x:0,y:0}, nil) # Make sure {x:0,y:0} is empty
         destination = {x:0,y:0}
         ant.send(:walk_towards, destination)
         expect(ant.position).to eq(destination)

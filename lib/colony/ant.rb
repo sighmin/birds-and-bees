@@ -13,13 +13,13 @@ class Ants::Colony::Ant
   def perceive_and_act
     if unladen? and @@grid.item_at?(position)
       item = @@grid.get(position)
-      pickup_probability = item.pickup_probability(item, @@grid.neighbors(item.position))
+      pickup_probability = item.pickup_probability(item, @@grid.neighbors(item.position), @@config[:patchsize])
       # if U(0,1) < Pp(Ya) then pickup(item) end
       if Ants::Utils.random() < pickup_probability
         pickup_item
       end
     elsif laden? and @@grid.empty_at?(position)
-      drop_probability = @item.drop_probability(@item, @@grid.neighbors(@item.position))
+      drop_probability = @item.drop_probability(@item, @@grid.neighbors(@item.position), @@config[:patchsize])
       if Ants::Utils.random() < drop_probability
         drop_item
       end
@@ -31,8 +31,7 @@ class Ants::Colony::Ant
   end
 
   def move
-    neighbor_sites = @@grid.adjacent_sites(position)
-    neighbor_site  = neighbor_sites.sample
+    neighbor_site = @@grid.adjacent_sites(position).sample
     walk_towards(neighbor_site)
   end
 

@@ -1,5 +1,5 @@
-gridsize: 20
-iterations: 200
-colonysize: 25
+gridsize: 40
+iterations: 2000
+colonysize: 20
 patchsize: 2
-print_resolution: 50
+print_resolution: 100

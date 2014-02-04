@@ -12,7 +12,7 @@ end
 # Configurations
 I18n.enforce_available_locales = false
 ARGV.map! {|arg| arg.to_i}
-NUM_USERS = ARGV.shift || 25
+NUM_USERS = ARGV.shift || 160
 
 # Categories setup
 music_pool = %w{acoustic punk blues gospel classical western dance emo folk indie hiphop jazz metal ska spoken}
@@ -22,8 +22,8 @@ tech_pool  = %w{apple google platform45 html slim sass coffeescript griffin ruby
 targets    = %w{muso sporty foodie geek}
 
 # Interest level setup
-primary      = 0.8
-average1     = 0.3
+primary      = 0.9
+average1     = 0.2
 average2     = 0.2
 uninterested = 0.0
 distribution = [primary, average1, average2, uninterested]

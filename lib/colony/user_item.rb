@@ -1,21 +1,35 @@
+# Compare by calculating % of common interests
+# This would typically be produced by some predictive model (trained NN)
+
 class Ants::Colony::UserItem < Ants::Colony::Item
-
-  def self.pickup_probability(item, neighbors)
-    ( @@lambda1/(@@lamba1 + dissimilarity(item, neighbors)) ) ** 2
-  end
-
-  def self.drop_probability(item, neighbors)
-    dissimilarity_index = dissimilarity(item, neighbors)
-    if dissimilarity_index < @@lambda2
-      2 * dissimilarity_index
-    else # >= @@lambda2
-      1
-    end
-  end
 
 protected
 
-  def self.dissimilarity(item, neighbors)
-    0.1
+  def self.dissimilarity(item, foreign)
+    item_interests = item.data[:interests]
+    foreign_interests = foreign.data[:interests]
+    item_num_interests = count_interests_in_hash(item_interests)
+    foreign_num_interests = count_interests_in_hash(foreign_interests)
+
+    num_similar = 0
+    item_interests.each do |k, v|
+      num_similar += count_identical_in_arr(v, foreign_interests[k])
+    end
+
+    num_similar.to_f / [item_num_interests, foreign_num_interests].min.to_f
   end
+
+  def self.count_interests_in_hash(interests)
+    count = 0
+    interests.each do |k,v|
+      count += v.length
+    end
+    count
+  end
+
+  def self.count_identical_in_arr(arr1, arr2)
+    composite_arr = arr1 + arr2
+    composite_arr.length - composite_arr.uniq.length
+  end
+
 end
