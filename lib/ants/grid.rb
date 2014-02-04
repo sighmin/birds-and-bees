@@ -49,15 +49,14 @@ class Ants::Grid < Matrix
     @rows.fetch(0).length
   end
 
-  def move(current, destination)
-    current_object     = get(current)
+  def move(current_object, destination)
     destination_object = get(destination)
     if current_object.kind_of?(Ants::Colony::Item) && destination_object.kind_of?(Ants::Colony::Item)
       raise "Cannot pile up items on the grid"
     end
     set(destination, current_object) unless destination_object.kind_of?(Ants::Colony::Item)
     current_object.position = destination
-    set(current, nil)
+    set(current_object.position, nil)
   end
 
   def adjacent_sites(position)
@@ -89,6 +88,14 @@ class Ants::Grid < Matrix
     end
   end
 
+  def neighbor_items(position, patchsize = 1)
+    positions = neighbors(position, patchsize)
+    positions.select! do |pos|
+      obj = self.get(pos)
+      obj.kind_of? Ants::Colony::Item
+    end
+  end
+
   def item_at?(position)
     get(position).kind_of? Ants::Colony::Item
   end
@@ -106,6 +113,7 @@ class Ants::Grid < Matrix
       end
       string += "#{line}\n"
     end
+    string += "\n"
     string
   end
 

@@ -1,6 +1,9 @@
 class Ants::Colony::Ant
 
   attr_accessor :x, :y, :item
+  @@lambda        = 1.0
+  @@lambda_pickup = 1.0
+  @@lambda_drop   = 1.0
 
   def initialize(config, position = {x: 0, y: 0}, grid = nil)
     @@config   = config
@@ -13,13 +16,15 @@ class Ants::Colony::Ant
   def perceive_and_act
     if unladen? and @@grid.item_at?(position)
       item = @@grid.get(position)
-      pickup_probability = pickup_probability(item, @@grid.neighbors(item.position))
+      neighbors = @@grid.neighbor_items(item.position, @@config[:patchsize])
+      pickup_probability = pickup_probability(item, neighbors)
       # if U(0,1) < Pp(Ya) then pickup(item) end
       if Ants::Utils.random() < pickup_probability
         pickup_item
       end
     elsif laden? and @@grid.empty_at?(position)
-      drop_probability = drop_probability(@item, @@grid.neighbors(@item.position))
+      neighbors = @@grid.neighbor_items(@item.position, @@config[:patchsize])
+      drop_probability = drop_probability(@item, neighbors)
       if Ants::Utils.random() < drop_probability
         drop_item
       end
@@ -64,7 +69,7 @@ protected
     current_position = {x: @x, y: @y}
     @x = site[:x]
     @y = site[:y]
-    @@grid.move(current_position, site)
+    @@grid.move(self, site)
   end
 
   def unladen?
@@ -76,7 +81,7 @@ protected
   end
 
   def pickup_probability(item, neighbors)
-    ( @@lambda_pickup/(@@lamba_pickup + local_density(item, neighbors)) ) ** 2
+    ( @@lambda_pickup/(@@lambda_pickup + local_density(item, neighbors)) ) ** 2
   end
 
   def drop_probability(item, neighbors)
@@ -92,7 +97,10 @@ protected
     inverse_patch_squared = 1.0 / (@@config[:patchsize] ** 2)
     sum_similarity = 0.0
     neighbors.each do |foreign|
-      sum_similarity += (1.0 - (item.dissimilarity(foreign)/@@lamba))
+      neighbor = @@grid.get(foreign)
+      unless neighbor.nil?
+        sum_similarity += (1.0 - (item.dissimilarity(neighbor)/@@lambda))
+      end
     end
     average_similarity = inverse_patch_squared * sum_similarity
     [0.0, average_similarity].max
