@@ -13,13 +13,13 @@ class Ants::Colony::Ant
   def perceive_and_act
     if unladen? and @@grid.item_at?(position)
       item = @@grid.get(position)
-      pickup_probability = item.pickup_probability(item, @@grid.neighbors(item.position), @@config[:patchsize])
+      pickup_probability = pickup_probability(item, @@grid.neighbors(item.position))
       # if U(0,1) < Pp(Ya) then pickup(item) end
       if Ants::Utils.random() < pickup_probability
         pickup_item
       end
     elsif laden? and @@grid.empty_at?(position)
-      drop_probability = @item.drop_probability(@item, @@grid.neighbors(@item.position), @@config[:patchsize])
+      drop_probability = drop_probability(@item, @@grid.neighbors(@item.position))
       if Ants::Utils.random() < drop_probability
         drop_item
       end
@@ -73,6 +73,29 @@ protected
 
   def laden?
     not unladen?
+  end
+
+  def pickup_probability(item, neighbors)
+    ( @@lambda_pickup/(@@lamba_pickup + local_density(item, neighbors)) ) ** 2
+  end
+
+  def drop_probability(item, neighbors)
+    density = local_density(item, neighbors)
+    if density < @@lambda_drop
+      2 * density
+    else # >= @@lambda2
+      1
+    end
+  end
+
+  def local_density(item, neighbors)
+    inverse_patch_squared = 1.0 / (@@config[:patchsize] ** 2)
+    sum_similarity = 0.0
+    neighbors.each do |foreign|
+      sum_similarity += (1.0 - (item.dissimilarity(foreign)/@@lamba))
+    end
+    average_similarity = inverse_patch_squared * sum_similarity
+    [0.0, average_similarity].max
   end
 
 end

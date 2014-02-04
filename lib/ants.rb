@@ -1,5 +1,7 @@
 require 'ants/version'
 require 'yaml'
+require 'pry'
+require 'matrix'
 
 def expand_relative_path(file)
   File.expand_path(File.join('../', file), __FILE__)
@@ -21,7 +23,6 @@ module Ants
   autoload :Grid,                expand_relative_path('ants/grid')
   autoload :Utils,               expand_relative_path('ants/utils')
 
-  # Entry point here
   extend self
   def test
     "Totally awesome test method!"
@@ -47,3 +48,10 @@ private
     }
   end
 end
+
+# Entry point here
+include Ants
+
+simulation = Sims::Simulation.new
+simulation.start
+

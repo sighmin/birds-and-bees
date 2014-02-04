@@ -12,8 +12,7 @@ describe Item do
   end
 
   it "has helper methods" do
-    expect(item).to respond_to(:x, :y, :data, :position, :position=, :print)
-    expect(Item).to respond_to(:pickup_probability, :drop_probability, :dissimilarity, :local_density)
+    expect(item).to respond_to(:x, :y, :data, :position, :position=, :print, :dissimilarity)
   end
 
   describe "methods" do
@@ -33,22 +32,8 @@ describe Item do
   end
 
   describe "class methods" do
-    it ".pickup_probability raises an error" do
-      expect { Item.send(:pickup_probability) }.to raise_error
-    end
-
-    it ".drop_probability raises an error" do
-      expect { Item.send(:drop_probability) }.to raise_error
-    end
-
-    describe "protected" do
-      it ".local_density raises an error" do
-        expect { Item.send(:local_density) }.to raise_error
-      end
-
-      it ".dissimilarity raises an error" do
-        expect { Item.send(:dissimilarity) }.to raise_error
-      end
+    it "#dissimilarity raises an error" do
+      expect { Item.send(:dissimilarity) }.to raise_error
     end
   end
 

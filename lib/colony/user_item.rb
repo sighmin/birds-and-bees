@@ -3,10 +3,8 @@
 
 class Ants::Colony::UserItem < Ants::Colony::Item
 
-protected
-
-  def self.dissimilarity(item, foreign)
-    item_interests = item.data[:interests]
+  def dissimilarity(foreign)
+    item_interests = self.data[:interests]
     foreign_interests = foreign.data[:interests]
     item_num_interests = count_interests_in_hash(item_interests)
     foreign_num_interests = count_interests_in_hash(foreign_interests)
@@ -19,7 +17,9 @@ protected
     num_similar.to_f / [item_num_interests, foreign_num_interests].min.to_f
   end
 
-  def self.count_interests_in_hash(interests)
+protected
+
+  def count_interests_in_hash(interests)
     count = 0
     interests.each do |k,v|
       count += v.length
@@ -27,7 +27,7 @@ protected
     count
   end
 
-  def self.count_identical_in_arr(arr1, arr2)
+  def count_identical_in_arr(arr1, arr2)
     composite_arr = arr1 + arr2
     composite_arr.length - composite_arr.uniq.length
   end

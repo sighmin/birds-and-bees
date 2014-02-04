@@ -43,23 +43,16 @@ describe UserItem do
   end
 
   it "has helper methods" do
-    expect(item).to respond_to(:x, :y, :data, :position, :print)
-    expect(UserItem).to respond_to(:pickup_probability, :drop_probability, :dissimilarity, :local_density)
+    expect(item).to respond_to(:x, :y, :data, :position, :print, :dissimilarity)
   end
 
   describe "methods" do
 
-    it ".pickup_probability"
-
-    it ".drop_probability"
-
     describe "protected" do
 
-      it ".local_density"
-
-      it ".dissimilarity returns a measure between user items" do
-        similar = UserItem.send(:dissimilarity, item, similar_item)
-        dissimilar = UserItem.send(:dissimilarity, item, dissimilar_item)
+      it "#dissimilarity returns a measure between user items" do
+        similar = item.send(:dissimilarity, similar_item)
+        dissimilar = item.send(:dissimilarity, dissimilar_item)
         expect(similar).to be > 0.5
         expect(dissimilar).to be < 0.5
       end
