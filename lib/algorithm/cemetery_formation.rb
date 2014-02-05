@@ -8,7 +8,7 @@ class Ants::Algorithm::CemeteryFormation
     @dataset = Ants::parse_array_yml(datafile)
 
     init_grid
-    #init_items
+    init_items
     init_ants
   end
 
@@ -22,7 +22,7 @@ class Ants::Algorithm::CemeteryFormation
   def iteration(i)
     print_grid(i)
     @ants.each do |ant|
-      #ant.perceive_and_act
+      ant.perceive_and_act
       ant.move
     end
     find_hidden_ants

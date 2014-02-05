@@ -76,7 +76,7 @@ describe Grid do
       grid = Grid.build(2,2){|x,y| nil }
       grid[0,0] = Ants::Colony::Item.new
       grid[1,1] = Ants::Colony::Ant.new(nil, {x:1, y:1})
-      expect(grid.to_s).to eq("O . \n. x \n")
+      expect(grid.to_s).to eq("O . \n. x \n\n")
     end
 
     it "#adjacent_sites returns site positions with patchsize of 1" do
@@ -113,14 +113,15 @@ describe Grid do
 
     it "#move moves the object at first parameter position to second parameter position" do
       # moves item to nil
-      small_grid.move({x:0,y:0},{x:1,y:0})
+      small_grid.move(small_grid.get({x:0, y:0}),{x:1,y:0})
       expect(small_grid[0,0]).to be_nil
       expect(small_grid[1,0].kind_of?(Ants::Colony::Item)).to eq(true)
       # moves item to item => error raised
-      small_grid.set({x:0, y:0}, Ants::Colony::UserItem.new)
-      expect { small_grid.move({x:0, y:0}, {x:1, y:0}) }.to raise_error
+      new_item = Ants::Colony::UserItem.new
+      small_grid.set({x:0, y:0}, new_item)
+      expect { small_grid.move(new_item, {x:1, y:0}) }.to raise_error
       # moves ant to item
-      small_grid.move({x:1, y:1}, {x:0, y:0})
+      small_grid.move(small_grid.get({x:1, y:1}), {x:0, y:0})
       expect(small_grid[0,0].kind_of?(Ants::Colony::Item)).to eq(true)
       expect(small_grid[1,1]).to be_nil
     end
