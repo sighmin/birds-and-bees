@@ -18,7 +18,6 @@ class Ants::Colony::Ant
       item = @@grid.get(position)
       neighbors = @@grid.neighbor_items(item.position, @@config[:patchsize])
       pickup_probability = pickup_probability(item, neighbors)
-      # if U(0,1) < Pp(Ya) then pickup(item) end
       if Ants::Utils.random() < pickup_probability
         pickup_item
       end
@@ -66,9 +65,9 @@ protected
   end
 
   def walk_towards(site)
-    current_position = {x: @x, y: @y}
-    @x = site[:x]
-    @y = site[:y]
+    #current_position = {x: @x, y: @y}
+    #@x = site[:x]
+    #@y = site[:y]
     @@grid.move(self, site)
   end
 

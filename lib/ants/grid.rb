@@ -55,8 +55,9 @@ class Ants::Grid < Matrix
       raise "Cannot pile up items on the grid"
     end
     set(destination, current_object) unless destination_object.kind_of?(Ants::Colony::Item)
-    current_object.position = destination
-    set(current_object.position, nil)
+    previous_position = current_object.position
+    current_object.position = destination.dup
+    set(previous_position)
   end
 
   def adjacent_sites(position)
