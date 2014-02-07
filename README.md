@@ -1,6 +1,10 @@
-# Ants
+# Rubyfuza 2014
 
-Ants is a simple gem to illustrate how to use an ant algorithm to perform data clustering.
+I'll fix this up as soon as I get a chance!
+
+## The Birds and the Bees
+
+The birds and the bees is a simple gem to illustrate how to use an ant algorithm to perform data clustering.
 Data clustering is simply the grouping of similar items and the separation of dissimilar items.
 
 Ants was written for RubyFuza 2014 in Cape Town, South Africa, and among other things, illustrates a practical computational intelligence algorithm and the joy of programming in metaphors.
@@ -21,7 +25,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+* Install the gem and `cd` to it's source
+* `$ bundle exec config/create_users.rb` to generate random users with interests
+* Try it out with:
+
+```
+#!/usr/bin/env ruby
+
+require 'ants'
+simulation = Ants::Sim::Simulation.new
+simulation.start
+```
 
 ## Contributing
 
