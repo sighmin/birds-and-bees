@@ -1,9 +1,10 @@
 class Ants::Colony::Ant
 
   attr_accessor :x, :y, :item
-  @@lambda        = 1.0
-  @@lambda_pickup = 1.0
-  @@lambda_drop   = 1.0
+  @@lambda        = 1.2
+  @@lambda_pickup = 2.0
+  @@lambda_drop   = 0.5
+  @@lambda_power  = 4.0
 
   def initialize(config, position = {x: 0, y: 0}, grid = nil)
     @@config   = config
@@ -36,7 +37,7 @@ class Ants::Colony::Ant
 
   def move
     neighbor_site = @@grid.adjacent_sites(position).sample
-    walk_towards(neighbor_site)
+    @@grid.move(self, neighbor_site)
   end
 
   def position
@@ -64,13 +65,6 @@ protected
     @item = nil
   end
 
-  def walk_towards(site)
-    #current_position = {x: @x, y: @y}
-    #@x = site[:x]
-    #@y = site[:y]
-    @@grid.move(self, site)
-  end
-
   def unladen?
     @item.nil?
   end
@@ -80,7 +74,7 @@ protected
   end
 
   def pickup_probability(item, neighbors)
-    ( @@lambda_pickup/(@@lambda_pickup + local_density(item, neighbors)) ) ** 2
+    ( @@lambda_pickup/(@@lambda_pickup + local_density(item, neighbors)) ) ** @lambda_power
   end
 
   def drop_probability(item, neighbors)
@@ -93,7 +87,8 @@ protected
   end
 
   def local_density(item, neighbors)
-    inverse_patch_squared = 1.0 / (@@config[:patchsize] ** 2)
+    puts neighbors
+    inverse_patch_squared = 1.0 / (neighbors.length.to_f)
     sum_similarity = 0.0
     neighbors.each do |foreign|
       neighbor = @@grid.get(foreign)

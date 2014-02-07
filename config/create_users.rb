@@ -22,16 +22,16 @@ tech_pool  = %w{apple google platform45 html slim sass coffeescript griffin ruby
 targets    = %w{muso sporty foodie geek}
 
 # Interest level setup
-primary      = 0.9
-average1     = 0.2
-average2     = 0.2
+primary      = 1.0
+average1     = 0.0 #0.5
+average2     = 0.0 #0.5
 uninterested = 0.0
 distribution = [primary, average1, average2, uninterested]
 
 # Generation loop
 users = []
 NUM_USERS.times do |i|
-  dist = distribution.shuffle
+  dist = distribution #dist = distribution.shuffle
   users << {
     name: Faker::Name.name,
     interests: {
