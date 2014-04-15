@@ -9,19 +9,19 @@ end
 
 module Ants
   # Autoload require paths here
-  module Sims
-    autoload :Simulation,        expand_relative_path('sims/simulation')
-  end
-  module Algorithm
-    autoload :CemeteryFormation, expand_relative_path('algorithm/cemetery_formation')
-  end
-  module Colony
-    autoload :Ant,               expand_relative_path('colony/ant')
-    autoload :Item,              expand_relative_path('colony/item')
-    autoload :UserItem,          expand_relative_path('colony/user_item')
-  end
-  autoload :Grid,                expand_relative_path('ants/grid')
-  autoload :Utils,               expand_relative_path('ants/utils')
+  #module Sims
+  #  autoload :Simulation,        expand_relative_path('sims/simulation')
+  #end
+  #module Algorithm
+  #  autoload :CemeteryFormation, expand_relative_path('algorithm/cemetery_formation')
+  #end
+  #module Colony
+  #  autoload :Ant,               expand_relative_path('colony/ant')
+  #  autoload :Item,              expand_relative_path('colony/item')
+  #  autoload :UserItem,          expand_relative_path('colony/user_item')
+  #end
+  #autoload :Grid,                expand_relative_path('ants/grid')
+  #autoload :Utils,               expand_relative_path('ants/utils')
 
   extend self
   def test
