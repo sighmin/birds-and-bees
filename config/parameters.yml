@@ -1,7 +1,7 @@
-gridsize: 10
-iterations: 15
-colonysize: 1
+gridsize: 20
+iterations: 10000
+colonysize: 4
 patchsize: 1
-print_resolution: 1
+print_resolution: 100
 datafile: 'config/mock_users.yml'
-temp_data: 10
+temp_data: 40

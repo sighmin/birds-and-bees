@@ -31,7 +31,7 @@ class Ants::Algorithm::CemeteryFormation
     puts initial_grid
     puts "===> Final clustering:"
     puts grid.to_s
-    binding.pry
+    #binding.pry
   end
 
   def print_grid i

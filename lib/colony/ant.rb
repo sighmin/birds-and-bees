@@ -10,11 +10,11 @@ class Ants::Colony::Ant < Ants::Colony::Entity
 
   def move
     new_x, new_y = valid_move
-    puts "moving #{x},#{y} -> #{new_x},#{new_y}"
-    current = grid[x,y]
+    #puts "moving #{x},#{y} -> #{new_x},#{new_y}"
+    current_cell = grid[x,y]
 
     # Update old cell
-    if current.type == 'B'
+    if current_cell.type == 'B'
       # @todo replace this with the item held by the ant
       @grid[x,y] = Ants::Colony::UserItem.new(grid, x, y)
     else
@@ -23,8 +23,8 @@ class Ants::Colony::Ant < Ants::Colony::Entity
 
     # Update new cell
     @x, @y = new_x, new_y
-    newposition = grid[x,y]
-    if newposition.type == 'I'
+    new_cell = grid[x,y]
+    if new_cell.type == 'I'
       @type = 'B' # there was an item there
       @grid[x,y] = self
     else
@@ -37,7 +37,7 @@ class Ants::Colony::Ant < Ants::Colony::Entity
     # Perform pick up / drop
     if unladen? && type == 'B'
       # @todo implement heterogeneous probabilities
-      pickup_p = 1.0
+      pickup_p = pickup_probability
       if Ants::Utils.random < pickup_p
         @type = 'A'
         @item = 'yes'
@@ -45,7 +45,7 @@ class Ants::Colony::Ant < Ants::Colony::Entity
       end
     elsif laden? && type == 'A'
       # @todo implement heterogeneous probabilities
-      drop_p = 1.0
+      drop_p = drop_probability
       if Ants::Utils.random < drop_p
         @type = 'B'
         @item = nil
@@ -84,6 +84,30 @@ private
       valid = is_valid? new_x, new_y
     end
     return new_x %= grid.size, new_y %= grid.size
+  end
+
+  def pickup_probability
+    lamda = density
+    #1.0 / (1.0 + lamda)
+    (1.0 / (1.0 + lamda)) ** 2.0
+  end
+
+  def drop_probability
+    lamda = density
+    #lamda / (1.0 + lamda)
+    (lamda / (1.0 + lamda)) ** 2.0
+  end
+
+  def density
+    items = 0
+    positions = [[-1,-1],[1,1]] \
+              + [[0,1],[1,0]]   \
+              + [[0,-1],[-1,0]] \
+              + [[1,-1],[-1,1]]
+    positions.each do |position|
+      items += 1 if grid.item?(x + position[0], y + position[1])
+    end
+    items
   end
 end
 

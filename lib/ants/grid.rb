@@ -15,12 +15,16 @@ class Ants::Grid
   end
 
   def [](x, y)
-    raise IndexError unless (x > -1 && y > -1)
+    raise IndexError unless (x >= 0 && y >= 0)
     surface[x][y]
   end
 
   def []=(x, y, item)
     @surface[x][y] = item
+  end
+
+  def item? x, y
+    surface[x % size][y % size].type == 'I'
   end
 
   def collision? x, y

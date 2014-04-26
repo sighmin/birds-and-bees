@@ -1,33 +1,32 @@
 # Rubyfuza 2014
 
-I'll fix this up as soon as I get a chance!
+Clustering of heterogeneous items complete, need to implement heterogeneous data,
+hang on there folks!
 
 ## The Birds and the Bees
 
-The birds and the bees is a simple gem to illustrate how to use an ant algorithm to perform data clustering.
-Data clustering is simply the grouping of similar items and the separation of dissimilar items.
+The birds and the bees is a simple gem to illustrate how to use an ant algorithm
+to perform data clustering.
+Data clustering is simply the grouping of similar items and the separation of
+dissimilar items.
 
-Ants was written for RubyFuza 2014 in Cape Town, South Africa, and among other things, illustrates a practical computational intelligence algorithm and the joy of programming in metaphors.
+Ants was written for RubyFuza 2014 in Cape Town, South Africa, and among other
+things, illustrates a practical computational intelligence algorithm and the joy
+of programming in metaphors.
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Grab the code from rubygems:
 
-    gem 'ants'
+  `$ gem install ants`
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install ants
 
 ## Usage
 
 * Install the gem and `cd` to it's source
-* `$ bundle exec config/create_users.rb` to generate random users with interests
-* Try it out with:
+* `$ bundle exec bin/generate_data` to generate random users with interests
+* Try it out with something like:
 
 ```
 #!/usr/bin/env ruby
@@ -37,6 +36,11 @@ simulation = Ants::Sim::Simulation.new
 simulation.start
 ```
 
+Note: You'll only have to generate the data once, but the script is included
+to see how the ants behave when they encounter various levels of 'heterogeneity'
+(data that is more different than one another)
+
+
 ## Contributing
 
 1. Fork it
@@ -44,3 +48,29 @@ simulation.start
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+## License
+
+Copyright (c) 2014 Simon van Dyk
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
