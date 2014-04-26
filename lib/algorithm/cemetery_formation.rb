@@ -15,6 +15,9 @@ class Ants::Algorithm::CemeteryFormation
   end
 
   def run
+    puts "===> Algorithm starting!"
+    initial_grid = grid.to_s
+
     @config[:iterations].times do |i|
       print_grid i
       @ants.each do |ant|
@@ -23,9 +26,12 @@ class Ants::Algorithm::CemeteryFormation
       end
     end
 
-    puts "===> Algorithm complete!"
-    puts "===> Final clustering result"
+    puts "\n===> Algorithm complete!"
+    puts "===> Initial clustering:"
+    puts initial_grid
+    puts "===> Final clustering:"
     puts grid.to_s
+    binding.pry
   end
 
   def print_grid i

@@ -24,7 +24,7 @@ class Ants::Grid
   end
 
   def collision? x, y
-    surface[x][y].type == 'A'
+    surface[x][y].type == 'A' || surface[x][y].type == 'B'
   end
 
   def to_s

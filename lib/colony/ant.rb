@@ -10,7 +10,7 @@ class Ants::Colony::Ant < Ants::Colony::Entity
 
   def move
     new_x, new_y = valid_move
-    #puts "moving #{x},#{y} -> #{new_x},#{new_y}"
+    puts "moving #{x},#{y} -> #{new_x},#{new_y}"
     current = grid[x,y]
 
     # Update old cell
@@ -35,26 +35,26 @@ class Ants::Colony::Ant < Ants::Colony::Entity
 
   def act
     # Perform pick up / drop
-    if unladen?
-      if type == 'B'
-        # @todo implement heterogeneous probabilities
-        pickup_p = 1.0
-        if Ants::Utils.random < pickup_p
-          @type = 'A'
-          @item = 'yes'
-          @grid[x,y] = self
-        end
+    if unladen? && type == 'B'
+      # @todo implement heterogeneous probabilities
+      pickup_p = 1.0
+      if Ants::Utils.random < pickup_p
+        @type = 'A'
+        @item = 'yes'
+        @grid[x,y] = self
+      end
+    elsif laden? && type == 'A'
+      # @todo implement heterogeneous probabilities
+      drop_p = 1.0
+      if Ants::Utils.random < drop_p
+        @type = 'B'
+        @item = nil
+        @grid[x,y] = self
       end
     else
-      if type == 'A'
-        # @todo implement heterogeneous probabilities
-        drop_p = 1.0
-        if Ants::Utils.random < drop_p
-          @type = 'B'
-          @item = nil
-          @grid[x,y] = self
-        end
-      end
+      # Unable to act:
+      # 1. laden & can't pile items on another
+      # 2. unladen and no item to pickup
     end
   end
 
