@@ -25,7 +25,7 @@ Grab the code from rubygems:
 ## Usage
 
 * Install the gem and `cd` to it's source
-* `$ bundle exec bin/generate_data` to generate random users with interests
+* `$ bundle exec ruby bin/generate_data` to generate random users with interests
 * Try it out with something like:
 
 ```
