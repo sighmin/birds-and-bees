@@ -14,4 +14,8 @@ class Ants::Colony::Entity
     @type = 'E'
     @status = 0
   end
+
+  def to_s
+    "#{x},#{y} | #{type}"
+  end
 end

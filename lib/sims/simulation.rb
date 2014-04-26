@@ -19,7 +19,8 @@ private
     yield
   rescue StandardError => e
     puts "Failed gracefully"
-    puts e
+    puts e.message
+    puts e.backtrace.join("\n")
     # Fail on anything else
   end
 end

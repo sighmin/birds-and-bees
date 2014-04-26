@@ -15,23 +15,23 @@ class Ants::Algorithm::CemeteryFormation
   end
 
   def run
-    @config[:iterations].times { |i| iteration i }
-    puts "***> Algorithm complete!"
-    puts "***> Final clustering result"
-    puts @grid.to_s
-  end
-
-  def iteration i
-    print_grid i
-    @ants.each do |ant|
-      ant.move
+    @config[:iterations].times do |i|
+      print_grid i
+      @ants.each do |ant|
+        ant.move
+        ant.act
+      end
     end
+
+    puts "===> Algorithm complete!"
+    puts "===> Final clustering result"
+    puts grid.to_s
   end
 
   def print_grid i
     return unless (i % @config[:print_resolution] == 0)
     puts "Iteration # #{i}"
-    puts @grid.to_s
+    puts grid.to_s
   end
 
 private
@@ -42,22 +42,22 @@ private
 
   def init_ants
     @ants = []
-    @config[:colonysize].times do
-      @ants << Ants::Colony::Ant.new(@grid)
+    config[:colonysize].times do
+      @ants << Ants::Colony::Ant.new(grid)
     end
   end
 
   def init_items
     @items = []
-    @config[:temp_data].times do
-      @items << Ants::Colony::UserItem.new(@grid)
+    config[:temp_data].times do
+      @items << Ants::Colony::UserItem.new(grid)
     end
   end
 
   def place_ants
     i = 0
-    while (i < @ants.count) do
-      x, y = Ants::Utils.random(@grid.size), Ants::Utils.random(@grid.size)
+    while (i < ants.count) do
+      x, y = Ants::Utils.random(grid.size), Ants::Utils.random(grid.size)
       if (@grid[x,y].type == 'E')
         @grid[x,y] = @ants[i]
         @ants[i].x = x
@@ -71,8 +71,8 @@ private
 
   def place_items
     i = 0
-    while (i < @items.count) do
-      x, y = Ants::Utils.random(@grid.size), Ants::Utils.random(@grid.size)
+    while (i < items.count) do
+      x, y = Ants::Utils.random(grid.size), Ants::Utils.random(grid.size)
       if (@grid[x,y].type == 'E')
         @grid[x,y] = @items[i]
         @items[i].x = x
