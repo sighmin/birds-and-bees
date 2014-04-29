@@ -4,4 +4,4 @@ colonysize: 4
 patchsize: 1
 print_resolution: 100
 datafile: 'config/mock_users.yml'
-temp_data: 40
+entities: 40

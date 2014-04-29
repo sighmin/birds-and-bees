@@ -34,7 +34,15 @@ module Ants
     hash = rec_symbolize_keys(hash)
   end
 
-  def parse_array_yml(file)
+  def generate_data(config)
+    file = config[:datafile]
+    num_entities = config[:entities].nil? ? ((config[:gridsize] ** 2.0) / 10.0) : config[:entities]
+
+    # Run data generation script once
+    unless File.file? file
+      system "bundle exec ruby bin/generate_data #{num_entities}"
+    end
+    # Load and return
     File.read(file).squeeze("\n").split("---").map {|f| YAML.load(f) }.select {|x| x }
   end
 

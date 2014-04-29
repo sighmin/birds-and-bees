@@ -5,7 +5,7 @@ class Ants::Algorithm::CemeteryFormation
   def initialize config = {}
     @config = Ants::parse_yml 'config/parameters.yml'
     @config.merge! config
-    #@dataset = Ants::parse_array_yml @config[:datafile]
+    @dataset = Ants::generate_data @config
 
     init_grid
     init_ants
@@ -35,7 +35,7 @@ class Ants::Algorithm::CemeteryFormation
   end
 
   def print_grid i
-    return unless (i % @config[:print_resolution] == 0)
+    return unless (i % config[:print_resolution] == 0)
     puts "Iteration # #{i}"
     puts grid.to_s
   end
@@ -55,7 +55,8 @@ private
 
   def init_items
     @items = []
-    config[:temp_data].times do
+    entities = config[:entities].nil? ? ((config[:gridsize] ** 2.0) / 10.0) : config[:entities]
+    entities.times do
       @items << Ants::Colony::UserItem.new(grid)
     end
   end

@@ -2,6 +2,7 @@
 
 # Requirements
 require 'faker'
+
 # Monkey patch for convenience
 class Array
   def sample_ratio(percentage)
