@@ -19,6 +19,7 @@ module Ants
   module Colony
     autoload :Ant,               expand_relative_path('colony/ant')
     autoload :Entity,            expand_relative_path('colony/entity')
+    autoload :Item,              expand_relative_path('colony/item')
     autoload :UserItem,          expand_relative_path('colony/user_item')
   end
   autoload :Grid,                expand_relative_path('ants/grid')

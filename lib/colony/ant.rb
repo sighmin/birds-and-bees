@@ -2,6 +2,8 @@ class Ants::Colony::Ant < Ants::Colony::Entity
 
   attr_accessor :item
 
+  STRICTNESS_COEFF = 2.0
+
   def initialize grid, x = nil, y = nil
     super grid, x, y
     @type = 'A'
@@ -14,7 +16,7 @@ class Ants::Colony::Ant < Ants::Colony::Entity
     current_cell = grid[x,y]
 
     # Update old cell
-    if current_cell.type == 'B'
+    if current_cell.on_item?
       # @todo replace this with the item held by the ant
       @grid[x,y] = Ants::Colony::UserItem.new(grid, x, y)
     else
@@ -35,7 +37,7 @@ class Ants::Colony::Ant < Ants::Colony::Entity
 
   def act
     # Perform pick up / drop
-    if unladen? && type == 'B'
+    if unladen? && on_item?
       # @todo implement heterogeneous probabilities
       pickup_p = pickup_probability
       if Ants::Utils.random < pickup_p
@@ -43,7 +45,7 @@ class Ants::Colony::Ant < Ants::Colony::Entity
         @item = 'yes'
         @grid[x,y] = self
       end
-    elsif laden? && type == 'A'
+    elsif laden? && !on_item?
       # @todo implement heterogeneous probabilities
       drop_p = drop_probability
       if Ants::Utils.random < drop_p
@@ -56,6 +58,10 @@ class Ants::Colony::Ant < Ants::Colony::Entity
       # 1. laden & can't pile items on another
       # 2. unladen and no item to pickup
     end
+  end
+
+  def on_item?
+    type == 'B'
   end
 
 private
@@ -79,8 +85,8 @@ private
     valid = false
     new_x, new_y = 0, 0
     while (!valid)
-      new_x = @x + Ants::Utils.random(-1..1)
-      new_y = @y + Ants::Utils.random(-1..1)
+      new_x = x + Ants::Utils.random(-1..1)
+      new_y = y + Ants::Utils.random(-1..1)
       valid = is_valid? new_x, new_y
     end
     return new_x %= grid.size, new_y %= grid.size
@@ -88,14 +94,12 @@ private
 
   def pickup_probability
     lamda = density
-    #1.0 / (1.0 + lamda)
-    (1.0 / (1.0 + lamda)) ** 2.0
+    (1.0 / (1.0 + lamda)) ** STRICTNESS_COEFF
   end
 
   def drop_probability
     lamda = density
-    #lamda / (1.0 + lamda)
-    (lamda / (1.0 + lamda)) ** 2.0
+    (lamda / (1.0 + lamda)) ** STRICTNESS_COEFF
   end
 
   def density
