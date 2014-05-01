@@ -14,12 +14,12 @@ class Ants::Grid
     return 'E'
   end
 
-  def [](x, y)
+  def [] x, y
     raise IndexError unless (x >= 0 && y >= 0)
     surface[x][y]
   end
 
-  def []=(x, y, item)
+  def []= x, y, item
     @surface[x][y] = item
   end
 
@@ -55,7 +55,7 @@ private
   def populate_grid
     surface.each_with_index do |row, x|
       row.each_index do |y|
-        self[x,y] = Ants::Colony::Entity.new(x, y, self)
+        @surface[x][y] = Ants::Colony::Entity.new x, y, self
       end
     end
   end

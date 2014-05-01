@@ -1,4 +1,4 @@
-class Ants::Colony::Item < Ants::Colony::Entity
+class Ants::Colony::Item < Colony::Entity
 
   attr_accessor :status
   # status = 0 for unvisited

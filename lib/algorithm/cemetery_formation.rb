@@ -18,9 +18,9 @@ class Ants::Algorithm::CemeteryFormation
     puts "===> Algorithm starting!"
     initial_grid = grid.to_s
 
-    @config[:iterations].times do |i|
+    config[:iterations].times do |i|
       print_grid i
-      @ants.each do |ant|
+      ants.each do |ant|
         ant.move
         ant.act
       end

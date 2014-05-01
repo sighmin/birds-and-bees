@@ -1,4 +1,4 @@
-class Ants::Colony::Ant < Ants::Colony::Entity
+class Ants::Colony::Ant < Colony::Entity
 
   attr_accessor :item
 
