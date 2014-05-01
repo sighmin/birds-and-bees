@@ -22,5 +22,6 @@ private
     puts e.message
     puts e.backtrace.join("\n")
     # Fail on anything else
+    binding.pry if e.message == "undefined method `type' for nil:NilClass"
   end
 end

@@ -13,18 +13,25 @@ class Ants::Colony::Ant < Colony::Entity
   def move
     new_x, new_y = valid_move
     #puts "moving #{x},#{y} -> #{new_x},#{new_y}"
-    current_cell = grid[x,y]
+    current_position = grid[x,y]
 
     # Update old cell
-    if current_cell.on_item?
+    if current_position.on_item?
       # @todo replace this with the item held by the ant
-      @grid[x,y] = Ants::Colony::UserItem.new(grid, x, y)
+      #@grid[x,y] = Ants::Colony::UserItem.new(grid, x, y)
+      @grid.set_item x, y
     else
-      @grid[x,y] = Ants::Colony::Entity.new(x, y, grid)
+      #@grid[x,y] = Ants::Colony::Entity.new(x, y, grid)
+      @grid.set_entity x, y
+    end
+
+    # Update ant internal state
+    @x, @y = new_x, new_y
+    if laden?
+      @item.x, @item.y = new_x, new_y
     end
 
     # Update new cell
-    @x, @y = new_x, new_y
     new_cell = grid[x,y]
     if new_cell.type == 'I'
       @type = 'B' # there was an item there
@@ -42,7 +49,7 @@ class Ants::Colony::Ant < Colony::Entity
       pickup_p = pickup_probability
       if Ants::Utils.random < pickup_p
         @type = 'A'
-        @item = 'yes'
+        @item = @grid.get_item x, y
         @grid[x,y] = self
       end
     elsif laden? && !on_item?
@@ -50,6 +57,7 @@ class Ants::Colony::Ant < Colony::Entity
       drop_p = drop_probability
       if Ants::Utils.random < drop_p
         @type = 'B'
+        @grid.update_item @item, x, y
         @item = nil
         @grid[x,y] = self
       end

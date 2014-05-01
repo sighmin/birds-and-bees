@@ -1,9 +1,9 @@
 class Ants::Grid
 
-  attr_accessor :size, :surface
+  attr_accessor :size, :surface, :ants, :items
 
-  def initialize size
-    @size = size
+  def initialize size, ants, items
+    @size, @ants, @items = size, ants, items
     @surface = Array.new(size) { Array.new(size) }
     populate_grid
   end
@@ -29,6 +29,23 @@ class Ants::Grid
 
   def collision? x, y
     surface[x][y].type == 'A' || surface[x][y].type == 'B'
+  end
+
+  def set_item x, y
+    item = self.items.select {|i| i.x == x && i.y == y}.first
+    @surface[x][y] = item
+  end
+
+  def get_item x, y
+    self.items.select {|i| i.x == x && i.y == y}.first
+  end
+
+  def update_item item, x, y
+    item.x, item.y = x, y
+  end
+
+  def set_entity x, y
+    @surface[x][y] = Ants::Colony::Entity.new(x, y, self)
   end
 
   def to_s

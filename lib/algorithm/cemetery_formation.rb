@@ -6,12 +6,11 @@ class Ants::Algorithm::CemeteryFormation
     @config = Ants::parse_yml 'config/parameters.yml'
     @config.merge! config
     @dataset = Ants::generate_data @config
+    @ants, @items = [], []
+    @grid = Ants::Grid.new(@config[:gridsize], @ants, @items)
 
-    init_grid
-    init_ants
-    init_items
-    place_ants
-    place_items
+    init_entities
+    place_entities
   end
 
   def run
@@ -31,7 +30,6 @@ class Ants::Algorithm::CemeteryFormation
     puts initial_grid
     puts "===> Final clustering:"
     puts grid.to_s
-    #binding.pry
   end
 
   def print_grid i
@@ -42,26 +40,21 @@ class Ants::Algorithm::CemeteryFormation
 
 private
 
-  def init_grid
-    @grid = Ants::Grid.new @config[:gridsize]
-  end
-
-  def init_ants
-    @ants = []
+  def init_entities
+    # init ants
     config[:colonysize].times do
-      @ants << Ants::Colony::Ant.new(grid)
+      @ants << Ants::Colony::Ant.new(@grid)
     end
-  end
 
-  def init_items
-    @items = []
+    # init items
     entities = config[:entities].nil? ? ((config[:gridsize] ** 2.0) / 10.0) : config[:entities]
     entities.times do
-      @items << Ants::Colony::UserItem.new(grid)
+      @items << Ants::Colony::UserItem.new(@grid)
     end
   end
 
-  def place_ants
+  def place_entities
+    # place ants
     i = 0
     while (i < ants.count) do
       x, y = Ants::Utils.random(grid.size), Ants::Utils.random(grid.size)
@@ -74,9 +67,8 @@ private
       end
       i += 1
     end
-  end
 
-  def place_items
+    # place items
     i = 0
     while (i < items.count) do
       x, y = Ants::Utils.random(grid.size), Ants::Utils.random(grid.size)
@@ -90,4 +82,5 @@ private
       i += 1
     end
   end
+
 end
