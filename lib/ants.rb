@@ -12,6 +12,7 @@ module Ants
   # Autoload require paths here
   module Sims
     autoload :Simulation,        expand_relative_path('sims/simulation')
+    autoload :Analyzer,          expand_relative_path('sims/analyzer')
   end
   module Algorithm
     autoload :CemeteryFormation, expand_relative_path('algorithm/cemetery_formation')

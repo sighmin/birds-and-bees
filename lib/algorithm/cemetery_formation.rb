@@ -47,9 +47,8 @@ private
     end
 
     # init items
-    entities = config[:entities].nil? ? ((config[:gridsize] ** 2.0) / 10.0) : config[:entities]
-    entities.times do
-      @items << Ants::Colony::UserItem.new(@grid)
+    @dataset.each do |data|
+      @items << Ants::Colony::UserItem.new(@grid, data)
     end
   end
 

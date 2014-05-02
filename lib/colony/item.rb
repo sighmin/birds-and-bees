@@ -10,4 +10,12 @@ class Ants::Colony::Item < Colony::Entity
     @type = 'I'
     @status = 0
   end
+
+  def visit
+    @status = 1
+  end
+
+  def visited?
+    status == 1
+  end
 end

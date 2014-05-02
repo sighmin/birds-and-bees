@@ -1,6 +1,9 @@
 class Ants::Colony::UserItem < Colony::Item
 
-  def initialize grid, x = nil, y = nil
+  attr_accessor :data
+
+  def initialize grid, data, x = nil, y = nil
     super grid, x, y
+    @data = data
   end
 end

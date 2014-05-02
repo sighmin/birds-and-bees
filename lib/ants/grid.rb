@@ -48,6 +48,18 @@ class Ants::Grid
     @surface[x][y] = Ants::Colony::Entity.new(x, y, self)
   end
 
+  def neighbors item
+    ns = []
+    positions = [[-1,-1],[1,1]] \
+              + [[0,1],[1,0]]   \
+              + [[0,-1],[-1,0]] \
+              + [[1,-1],[-1,1]]
+    positions.each do |position|
+      ns << @surface[x][y] if item?(item.x + position[0], item.y + position[1])
+    end
+    ns
+  end
+
   def to_s
     # Include column indices
     string = "   "
