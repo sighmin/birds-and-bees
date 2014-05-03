@@ -13,6 +13,7 @@ class Ants::Sims::Analyzer
     @clusters = dbscan algorithm.grid.items
     @num_items = algorithm.grid.items.length
     @intercluster_distances = intercluster_distances clusters
+    @intracluster_distances = intracluster_distances clusters
   end
 
   def report
@@ -32,11 +33,11 @@ class Ants::Sims::Analyzer
       ==>
       ==> Number of clusters:     #{clusters.length}
       ==> Intercluster distances: #{@intercluster_distances}
-      ==> Intracluster distances: #{}
+      ==> Intracluster distances: #{@intracluster_distances}
       ==>
       ==> Avg cluster size:          #{average_of clusters}
       ==> Avg intercluster distance: #{(@intercluster_distances.reduce(:+)/@intercluster_distances.length).round(2)}
-      ==> Avg intracluster distance: #{}
+      ==> Avg intracluster distance: #{(@intracluster_distances.reduce(:+)/@intracluster_distances.length).round(2)}
     EOS
   end
 
@@ -102,14 +103,35 @@ private
       return [distance(centroid(clusters[0]), centroid(clusters[1]))]
     else
       centroids = clusters.map {|c| centroid(c)}
-      distances = OpenStruct.new
+      distances = []
       centroids.each_index do |i|
         centroids.each_index do |j|
-          distances["#{i}#{j}"] ||= distance(centroids[i], centroids[j])
+          next if i == j
+          distances << distance(centroids[i], centroids[j])
         end
       end
-      distances.to_h.flatten.reject {|d| d.is_a?(Symbol) || d == 0.0}.uniq
+      distances
     end
+  end
+
+  def intracluster_distances clusters
+    distances = []
+    clusters.each do |cluster|
+      distances << intra_distance(cluster)
+    end
+    distances
+  end
+
+  def intra_distance cluster
+    total = 0.0
+    sum   = 0
+    cluster.each_index do |i|
+      cluster.each_index do |j|
+        sum += 1
+        total += distance cluster[i], cluster[j]
+      end
+    end
+    total / sum
   end
 
   def centroid cluster
