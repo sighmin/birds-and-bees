@@ -55,7 +55,9 @@ class Ants::Grid
               + [[0,-1],[-1,0]] \
               + [[1,-1],[-1,1]]
     positions.each do |position|
-      ns << @surface[x][y] if item?(item.x + position[0], item.y + position[1])
+      nx = (item.x + position[0]) % size
+      ny = (item.y + position[1]) % size
+      ns << @surface[nx][ny] if item?(nx, ny)
     end
     ns
   end

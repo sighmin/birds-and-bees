@@ -7,4 +7,5 @@ include Ants
 
 simulation = Sims::Simulation.new
 simulation.start
+simulation.analyze
 
