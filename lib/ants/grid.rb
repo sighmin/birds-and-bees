@@ -87,11 +87,6 @@ class Ants::Grid
 private
 
   def item_at? x, y
-    #entity = surface[x % size][y % size]
-    #entity.type == 'I' ||
-      #entity.type == 'B' ||
-      #(entity.is_a?(Colony::Ant) && entity.laden?)
-
     self.items.select {|i| i.x == x && i.y == y}.first
   end
 

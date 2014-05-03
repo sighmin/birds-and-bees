@@ -43,7 +43,6 @@ class Ants::Colony::Ant < Colony::Entity
   def act
     # Perform pick up / drop
     if unladen? && on_item?
-      # @todo implement heterogeneous probabilities
       pickup_p = pickup_probability
       if Ants::Utils.random < pickup_p
         self.type = 'A'
@@ -52,7 +51,6 @@ class Ants::Colony::Ant < Colony::Entity
         self.grid[x,y] = self
       end
     elsif laden? && !on_item?
-      # @todo implement heterogeneous probabilities
       drop_p = drop_probability
       if Ants::Utils.random < drop_p
         self.type = 'B'
@@ -110,15 +108,25 @@ private
   end
 
   def density
-    items = 0
+    similarity_total = 0.0
     positions = [[-1,-1],[1,1]] \
               + [[0,1],[1,0]]   \
               + [[0,-1],[-1,0]] \
               + [[1,-1],[-1,1]]
     positions.each do |position|
-      items += 1 if grid.item?(x + position[0], y + position[1])
+      mod_x = (x + position[0]) % grid.size
+      mod_y = (y + position[1]) % grid.size
+      if grid.item?(mod_x, mod_y)
+        #binding.pry if !grid.get_item(x,y)
+        #binding.pry if !grid.get_item(mod_x, mod_y)
+        similarity_total += similarity(grid.get_item(x,y), grid.get_item(mod_x, mod_y))
+      end
     end
-    items
+    similarity_total
+  end
+
+  def similarity item_a, item_b
+    item_a.similarity_index item_b
   end
 end
 
