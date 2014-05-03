@@ -9,3 +9,14 @@ simulation = Sims::Simulation.new
 simulation.start
 simulation.analyze
 
+#items = simulation.algorithm.items
+#grid  = simulation.algorithm.grid
+#clusters = simulation.analyzer.clusters
+#noise    = simulation.analyzer.noise
+
+#items.each do |item|
+  #puts [item.x, item.y] if !grid.send(:item_at?, item.x, item.y)
+#end
+
+#binding.pry
+

@@ -33,6 +33,7 @@ class Ants::Grid
 
   def set_item x, y
     item = self.items.select {|i| i.x == x && i.y == y}.first
+    item.x, item.y = x, y
     @surface[x][y] = item
   end
 
@@ -55,9 +56,11 @@ class Ants::Grid
               + [[0,-1],[-1,0]] \
               + [[1,-1],[-1,1]]
     positions.each do |position|
-      nx = (item.x + position[0]) % size
-      ny = (item.y + position[1]) % size
-      ns << @surface[nx][ny] if item?(nx, ny)
+      mod_x = (item.x + position[0]) % size
+      mod_y = (item.y + position[1]) % size
+      if item_at?(mod_x, mod_y)
+        ns << self.items.select {|i| i.x == mod_x && i.y == mod_y}.first
+      end
     end
     ns
   end
@@ -72,7 +75,7 @@ class Ants::Grid
       # Include row index
       line = "#{i}#{' ' * (3 - i.to_s.length)}"
       row.each do |item|
-        char = item.type == 'E' ? '. ' : colored_type(item.type)
+        char = item.type == 'E' ? '. ' : colored_type(item)
         line << "#{char}"
       end
       string += "#{line}\n"
@@ -83,6 +86,15 @@ class Ants::Grid
 
 private
 
+  def item_at? x, y
+    #entity = surface[x % size][y % size]
+    #entity.type == 'I' ||
+      #entity.type == 'B' ||
+      #(entity.is_a?(Colony::Ant) && entity.laden?)
+
+    self.items.select {|i| i.x == x && i.y == y}.first
+  end
+
   def populate_grid
     surface.each_with_index do |row, x|
       row.each_index do |y|
@@ -91,7 +103,8 @@ private
     end
   end
 
-  def colored_type type
+  def colored_type item
+    type = item.type
     color = case type
             when 'A'
               "red"
@@ -100,6 +113,7 @@ private
             when 'B'
               "blue"
             end
+    color = "yellow" if item.respond_to?(:visited?) && item.visited?
     "#{type} ".send(color)
   end
 end

@@ -19,7 +19,10 @@ class Ants::Sims::Analyzer
       ==> Report
       ==>
       ==> Minimum cluster size: #{MINIMUM}
-      ==> Clusters: #{clusters.map {|c| c.length} + noise.map {|c| c.length}}
+      ==> All Clusters: #{clusters.map {|c| c.length} + noise.map {|c| c.length}}
+      ==> Clusters:     #{clusters.map {|c| c.length}}
+      ==> Noise:        #{noise.map {|c| c.length}}
+      ==> Noise coords: #{noise.map {|c| [c[0].x,c[0].y]}}
       ==>
       ==> Number of items: #{@num_items}
       ==> clustered:       #{accumulate_of clusters}
@@ -43,7 +46,7 @@ private
 
   def accumulate_of list
     arr = list.map {|i| i.length}
-    return 0 unless arr
+    return 0 if arr.empty?
     arr.reduce(:+)
   end
 
@@ -56,28 +59,30 @@ private
     cluster_list = []
     loop do
       current = next_unvisited items
-      break unless current
+      break if current.nil?
 
       cluster = []
       cluster_list << cluster
 
       rec_add_to_cluster cluster, current
-      cluster.uniq!
     end
-    @noise = cluster_list.select {|c| c.length <= MINIMUM}
-    cluster_list.reject! {|c| c.length <= MINIMUM}
+    @noise = cluster_list.select {|c| c.length < MINIMUM}
+    cluster_list.reject! {|c| c.length < MINIMUM}
     cluster_list
   end
 
   def rec_add_to_cluster cluster, current
+    #puts algorithm.grid
+    #puts "adding #{[current.x, current.y]}"
+    #binding.pry
     current.visit
     cluster << current
     neighbors = unvisited_neighbors current
 
-    return unless neighbors
+    return if neighbors.empty?
 
     neighbors.each do |neighbor|
-      rec_add_to_cluster cluster, neighbor
+      rec_add_to_cluster cluster, neighbor if neighbor.unvisited?
     end
   end
 

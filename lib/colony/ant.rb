@@ -18,27 +18,25 @@ class Ants::Colony::Ant < Colony::Entity
     # Update old cell
     if current_position.on_item?
       # @todo replace this with the item held by the ant
-      #@grid[x,y] = Ants::Colony::UserItem.new(grid, x, y)
-      @grid.set_item x, y
+      self.grid.set_item x, y
     else
-      #@grid[x,y] = Ants::Colony::Entity.new(x, y, grid)
-      @grid.set_entity x, y
+      self.grid.set_entity x, y
     end
 
     # Update ant internal state
-    @x, @y = new_x, new_y
+    self.x, self.y = new_x, new_y
     if laden?
-      @item.x, @item.y = new_x, new_y
+      self.item.x, self.item.y = new_x, new_y
     end
 
     # Update new cell
     new_cell = grid[x,y]
     if new_cell.type == 'I'
-      @type = 'B' # there was an item there
-      @grid[x,y] = self
+      self.type = 'B' # there was an item there
+      self.grid[x,y] = self
     else
-      @type = 'A' # there was no item there
-      @grid[x,y] = self
+      self.type = 'A' # there was no item there
+      self.grid[x,y] = self
     end
   end
 
@@ -48,18 +46,19 @@ class Ants::Colony::Ant < Colony::Entity
       # @todo implement heterogeneous probabilities
       pickup_p = pickup_probability
       if Ants::Utils.random < pickup_p
-        @type = 'A'
-        @item = @grid.get_item x, y
-        @grid[x,y] = self
+        self.type = 'A'
+        self.item = self.grid.get_item x, y
+        self.grid.update_item self.item, x, y
+        self.grid[x,y] = self
       end
     elsif laden? && !on_item?
       # @todo implement heterogeneous probabilities
       drop_p = drop_probability
       if Ants::Utils.random < drop_p
-        @type = 'B'
-        @grid.update_item @item, x, y
-        @item = nil
-        @grid[x,y] = self
+        self.type = 'B'
+        self.grid.update_item self.item, x, y
+        self.item = nil
+        self.grid[x,y] = self
       end
     else
       # Unable to act:
@@ -72,8 +71,6 @@ class Ants::Colony::Ant < Colony::Entity
     type == 'B'
   end
 
-private
-
   def unladen?
     item.nil?
   end
@@ -81,6 +78,8 @@ private
   def laden?
     !item.nil?
   end
+
+private
 
   def is_valid? new_x, new_y
     return false if (new_x == new_y && new_x == 0)

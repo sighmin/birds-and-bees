@@ -1,6 +1,7 @@
 class Ants::Colony::Item < Colony::Entity
 
   attr_accessor :status
+  STATUSES = [ :unvisited, :visited, :noise ]
 
   def initialize grid, x = nil, y = nil
     super grid, x, y
