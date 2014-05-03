@@ -12,6 +12,7 @@ class Ants::Sims::Analyzer
   def run
     @clusters = dbscan algorithm.grid.items
     @num_items = algorithm.grid.items.length
+    @intercluster_distances = intercluster_distances clusters
   end
 
   def report
@@ -24,16 +25,17 @@ class Ants::Sims::Analyzer
       ==> Noise:        #{noise.map {|c| c.length}}
       ==> Noise coords: #{noise.map {|c| [c[0].x,c[0].y]}}
       ==>
-      ==> Number of items: #{@num_items}
-      ==> clustered:       #{accumulate_of clusters}
-      ==> noise:           #{accumulate_of noise}
-      ==> % clustered:     #{percent_of clusters}%
-      ==> % noise:         #{percent_of noise}%
+      ==> Number of items:    #{@num_items}
+      ==> clustered:          #{accumulate_of clusters}
+      ==> noise:              #{accumulate_of noise}
+      ==> clustered : noise:  #{percent_of clusters}%:#{percent_of noise}%
       ==>
-      ==> Number of clusters: #{clusters.length}
-      ==> Avg cluster size:   #{average_of clusters}
+      ==> Number of clusters:     #{clusters.length}
+      ==> Intercluster distances: #{@intercluster_distances}
+      ==> Intracluster distances: #{}
       ==>
-      ==> Intercluster distance:     #{}
+      ==> Avg cluster size:          #{average_of clusters}
+      ==> Avg intercluster distance: #{(@intercluster_distances.reduce(:+)/@intercluster_distances.length).round(2)}
       ==> Avg intracluster distance: #{}
     EOS
   end
@@ -72,9 +74,6 @@ private
   end
 
   def rec_add_to_cluster cluster, current
-    #puts algorithm.grid
-    #puts "adding #{[current.x, current.y]}"
-    #binding.pry
     current.visit
     cluster << current
     neighbors = unvisited_neighbors current
@@ -92,6 +91,40 @@ private
 
   def next_unvisited items
     items.select {|i| i.unvisited? }.first
+  end
+
+  def intercluster_distances clusters
+    # Return if only one cluster exists
+    case clusters.length
+    when 1
+      return [0.0]
+    when 2
+      return [distance(centroid(clusters[0]), centroid(clusters[1]))]
+    else
+      centroids = clusters.map {|c| centroid(c)}
+      distances = OpenStruct.new
+      centroids.each_index do |i|
+        centroids.each_index do |j|
+          distances["#{i}#{j}"] ||= distance(centroids[i], centroids[j])
+        end
+      end
+      distances.to_h.flatten.reject {|d| d.is_a?(Symbol) || d == 0.0}.uniq
+    end
+  end
+
+  def centroid cluster
+    total = cluster.inject([0.0, 0.0]) do |sum, item|
+      [sum[0] + item.x, sum[1] + item.y]
+    end
+    [total[0]/cluster.length, total[1]/cluster.length]
+  end
+
+  def distance a, b
+    if a.respond_to?(:x)
+      Math.sqrt(((a.x - b.x) ** 2.0) + ((a.y - b.y) ** 2.0))
+    else
+      Math.sqrt(((a[0] - b[0]) ** 2.0) + ((a[1] - b[1]) ** 2.0))
+    end
   end
 
 end
