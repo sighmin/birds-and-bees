@@ -13,12 +13,10 @@ class Ants::Colony::Ant < Colony::Entity
 
   def move
     new_x, new_y = valid_move
-    #puts "moving #{x},#{y} -> #{new_x},#{new_y}"
     current_position = grid[x,y]
 
     # Update old cell
     if current_position.on_item?
-      # @todo replace this with the item held by the ant
       self.grid.set_item x, y
     else
       self.grid.set_entity x, y
@@ -101,14 +99,12 @@ private
   def pickup_probability
     lamda = density
     probability = (1.0 / (1.0 + lamda)) ** PICKUP_STRICTNESS_COEFF
-    #puts "pickup: #{probability}"
     probability
   end
 
   def drop_probability
     lamda = density
     probability = (lamda / (1.0 + lamda)) ** DROP_STRICTNESS_COEFF
-    #puts "drop: #{probability}"
     probability
   end
 

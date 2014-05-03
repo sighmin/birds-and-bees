@@ -43,12 +43,12 @@ private
   def init_entities
     # init ants
     config[:colonysize].times do
-      @ants << Ants::Colony::Ant.new(@grid)
+      self.ants << Ants::Colony::Ant.new(self.grid)
     end
 
     # init items
-    @dataset.each do |data|
-      @items << Ants::Colony::UserItem.new(@grid, data)
+    self.dataset.each do |data|
+      self.items << Ants::Colony::UserItem.new(self.grid, data)
     end
   end
 
@@ -57,10 +57,10 @@ private
     i = 0
     while (i < ants.count) do
       x, y = Ants::Utils.random(grid.size), Ants::Utils.random(grid.size)
-      if (@grid[x,y].type == 'E')
-        @grid[x,y] = @ants[i]
-        @ants[i].x = x
-        @ants[i].y = y
+      if (self.grid[x,y].type == 'E')
+        self.grid[x,y] = self.ants[i]
+        self.ants[i].x = x
+        self.ants[i].y = y
       else
         i -= 1
       end
@@ -71,10 +71,10 @@ private
     i = 0
     while (i < items.count) do
       x, y = Ants::Utils.random(grid.size), Ants::Utils.random(grid.size)
-      if (@grid[x,y].type == 'E')
-        @grid[x,y] = @items[i]
-        @items[i].x = x
-        @items[i].y = y
+      if (self.grid[x,y].type == 'E')
+        self.grid[x,y] = self.items[i]
+        self.items[i].x = x
+        self.items[i].y = y
       else
         i -= 1
       end

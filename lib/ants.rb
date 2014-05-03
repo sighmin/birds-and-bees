@@ -42,7 +42,7 @@ module Ants
 
     # Run data generation script once
     unless File.file? file
-      system "bundle exec ruby bin/generate_data #{num_entities}"
+      system "bundle exec ruby bin/generate #{num_entities}"
     end
     # Load and return
     File.read(file).squeeze("\n").split("---").map {|f| YAML.load(f) }.select {|x| x }

@@ -93,7 +93,7 @@ private
   def populate_grid
     surface.each_with_index do |row, x|
       row.each_index do |y|
-        @surface[x][y] = Ants::Colony::Entity.new x, y, self
+        self.surface[x][y] = Ants::Colony::Entity.new x, y, self
       end
     end
   end

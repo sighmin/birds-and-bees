@@ -1,14 +1,18 @@
 # Rubyfuza 2014
 
-Clustering of heterogeneous items complete, need to implement heterogeneous data,
-hang on there folks!
+Computational Intelligence code for data clustering, a code example of the
+presentation given at [Ruby Fuza 2014](http://rubyfuza.org).
+
 
 ## The Birds and the Bees
 
-The birds and the bees is a simple gem to illustrate how to use an ant algorithm
-to perform data clustering.
-Data clustering is simply the grouping of similar items and the separation of
-dissimilar items.
+*ants* is a simple gem to illustrate how to use an ant algorithm to perform data
+clustering. Data clustering is simply the grouping of similar items and the
+separation of dissimilar items.
+
+The AI model is inspired by the natural clustering phenomenon performed by ants
+on their dead, called Cemetery Formation. This implementation is based on the
+lumer-feita algorithm for data clustering of heterogeneous data items.
 
 Ants was written for RubyFuza 2014 in Cape Town, South Africa, and among other
 things, illustrates a practical computational intelligence algorithm and the joy
@@ -19,26 +23,27 @@ of programming in metaphors.
 
 Grab the code from rubygems:
 
-  `$ gem install ants`
+```
+$ gem install ants
+```
 
 
 ## Usage
 
-* Install the gem and `cd` to it's source
-* `$ bundle exec ruby bin/generate_data` to generate random users with interests
-* Try it out with something like:
+** Install the gem and `cd` to it's source **
+
+There is a sample script that can be run as follows:
 
 ```
-#!/usr/bin/env ruby
-
-require 'ants'
-simulation = Ants::Sim::Simulation.new
-simulation.start
+$ bundle exec ruby bin/simulate
 ```
 
 Note: You'll only have to generate the data once, but the script is included
 to see how the ants behave when they encounter various levels of 'heterogeneity'
 (data that is more different than one another)
+
+To try out a new data set, remove the old one and modify the `bin/generate`.
+Run `bin/simulate` again as above to recreate the datafile.
 
 
 ## Contributing

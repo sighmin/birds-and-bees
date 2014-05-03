@@ -10,11 +10,11 @@ class Ants::Colony::Item < Colony::Entity
   end
 
   def visit
-    @status = :visited
+    self.status = :visited
   end
 
   def noise
-    @status = :noise
+    self.status = :noise
   end
 
   def visited?

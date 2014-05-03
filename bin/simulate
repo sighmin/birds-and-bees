@@ -9,12 +9,12 @@ simulation = Sims::Simulation.new
 simulation.start
 simulation.analyze
 
-cs = simulation.analyzer.clusters
-data = cs.map{|c| c.map{|i| i.data} }
 
-class Array; def mode; sort_by {|i| grep(i).length }.last; end; end
-puts "data: #{cs.map{|c| c.map{|i| i.data[:target]}.sort }}"
-puts "mode: #{cs.map{|c| c.map{|i| i.data[:target]}.mode }}"
-
-binding.pry
+# Play around a bit with the clusters
+#
+# clusters = simulation.analyzer.clusters
+# class Array; def mode; sort_by {|i| grep(i).length }.last; end; end
+# puts "mode: #{clusters.map{|c| c.map{|i| i.data[:target]}.mode }}"
+#
+# binding.pry
 

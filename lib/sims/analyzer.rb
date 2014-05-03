@@ -29,7 +29,7 @@ class Ants::Sims::Analyzer
       ==> Number of items:    #{@num_items}
       ==> clustered:          #{accumulate_of clusters}
       ==> noise:              #{accumulate_of noise}
-      ==> clustered : noise:  #{percent_of clusters}%:#{percent_of noise}%
+      ==> clustered : noise:  #{percent_of clusters}:#{percent_of noise}
       ==>
       ==> Number of clusters:     #{clusters.length}
       ==> Intercluster distances: #{@intercluster_distances}
