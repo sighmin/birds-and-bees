@@ -9,14 +9,12 @@ simulation = Sims::Simulation.new
 simulation.start
 simulation.analyze
 
-#items = simulation.algorithm.items
-#grid  = simulation.algorithm.grid
-#clusters = simulation.analyzer.clusters
-#noise    = simulation.analyzer.noise
+cs = simulation.analyzer.clusters
+data = cs.map{|c| c.map{|i| i.data} }
 
-#items.each do |item|
-  #puts [item.x, item.y] if !grid.send(:item_at?, item.x, item.y)
-#end
+class Array; def mode; sort_by {|i| grep(i).length }.last; end; end
+puts "data: #{cs.map{|c| c.map{|i| i.data[:target]}.sort }}"
+puts "mode: #{cs.map{|c| c.map{|i| i.data[:target]}.mode }}"
 
-#binding.pry
+binding.pry
 

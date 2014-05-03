@@ -24,25 +24,32 @@ targets    = %w{muso sporty foodie geek}
 
 # Interest level setup
 primary      = 1.0
-average1     = 0.0 #0.5
-average2     = 0.0 #0.5
+secondary    = 0.2
+somewhat     = 0.1
 uninterested = 0.0
-distribution = [primary, average1, average2, uninterested]
+distribution = [primary, secondary, somewhat, uninterested]
+
+# Interest distribution setup
+clusters        = 2.0
+current_cluster = 1.0
 
 # Generation loop
 users = []
 NUM_USERS.times do |i|
-  dist = distribution #dist = distribution.shuffle
   users << {
     name: Faker::Name.name,
     interests: {
-      music: music_pool.sample_ratio(dist[0]),
-      sport: sport_pool.sample_ratio(dist[1]),
-      food: food_pool.sample_ratio(dist[2]),
-      tech: tech_pool.sample_ratio(dist[3])
+      music: music_pool.sample_ratio(distribution[0]),
+      sport: sport_pool.sample_ratio(distribution[1]),
+      food: food_pool.sample_ratio(distribution[2]),
+      tech: tech_pool.sample_ratio(distribution[3])
     },
-    target: targets[dist.index(dist.max)]
+    target: targets[distribution.index(distribution.max)]
   }
+  if ((i.to_f/NUM_USERS) > (current_cluster/clusters))
+    distribution = distribution.push distribution.shift
+    current_cluster += 1.0
+  end
 end
 
 # Persist generated users

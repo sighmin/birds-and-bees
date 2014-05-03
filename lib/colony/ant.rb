@@ -2,7 +2,8 @@ class Ants::Colony::Ant < Colony::Entity
 
   attr_accessor :item
 
-  STRICTNESS_COEFF = 2.0
+  PICKUP_STRICTNESS_COEFF = 1.5
+  DROP_STRICTNESS_COEFF   = 1.5
 
   def initialize grid, x = nil, y = nil
     super grid, x, y
@@ -99,12 +100,16 @@ private
 
   def pickup_probability
     lamda = density
-    (1.0 / (1.0 + lamda)) ** STRICTNESS_COEFF
+    probability = (1.0 / (1.0 + lamda)) ** PICKUP_STRICTNESS_COEFF
+    #puts "pickup: #{probability}"
+    probability
   end
 
   def drop_probability
     lamda = density
-    (lamda / (1.0 + lamda)) ** STRICTNESS_COEFF
+    probability = (lamda / (1.0 + lamda)) ** DROP_STRICTNESS_COEFF
+    #puts "drop: #{probability}"
+    probability
   end
 
   def density
@@ -117,8 +122,6 @@ private
       mod_x = (x + position[0]) % grid.size
       mod_y = (y + position[1]) % grid.size
       if grid.item?(mod_x, mod_y)
-        #binding.pry if !grid.get_item(x,y)
-        #binding.pry if !grid.get_item(mod_x, mod_y)
         similarity_total += similarity(grid.get_item(x,y), grid.get_item(mod_x, mod_y))
       end
     end
