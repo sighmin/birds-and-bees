@@ -21,10 +21,10 @@ of programming in metaphors.
 
 ## Installation
 
-Grab the code from rubygems:
+Grab the code from github:
 
 ```
-$ gem install ants
+$ git clone git@github.com:sighmin/birds-and-bees.git
 ```
 
 
